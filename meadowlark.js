@@ -1,35 +1,46 @@
 const express = require("express");
-const expressHandlebars = require("express-handlebars");
+const { engine } = require("express-handlebars");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.set("view engine", "handlebars");
+// Konfiguracja silnika widoków Handlebars
+app.engine(
+  "hbs",
+  engine({
+    layoutsDir: __dirname + "/views/layouts", // Ścieżka do układów (layouts)
+    extname: ".hbs", // Ustawienie rozszerzenia na .hbs
+  })
+);
+app.set("view engine", "hbs");
+app.set("views", __dirname + "/views"); // Ścieżka do folderu z widokami
 
-app.get("/", (req, res) => {
-  res.type("text/plain");
-  res.send("Meadowlark Travel");
-});
+app.use(express.static(__dirname + "/public"));
 
-app.get("/about", (req, res) => {
-  res.type("text/plain");
-  res.send("O Meadowlark Travel");
-});
+// Definiowanie trasy głównej
+app.get("/", (req, res) => res.render("home", { layout: "main" }));
 
+// Definiowanie trasy /about
+app.get("/about", (req, res) => res.render("about"));
+
+// Obsługa błędu 404
 app.use((req, res) => {
-  res.type("text/plain");
   res.status(404);
-  res.send("404 - not found");
+  res.render("404");
 });
 
+// Obsługa błędu 500
 app.use((err, req, res, next) => {
   console.error(err.message);
-  res.type("text/plain");
   res.status(500);
-  res.send("500 - server error");
+  res.render("500");
 });
 
+// Uruchomienie serwera
 app.listen(port, () =>
   console.log(
-    `Express started at: http://localhost:${port}; ` + "press Ctrl-C to exit"
+    `Express started at: http://localhost:${port}; press Ctrl-C to exit`
   )
 );
+
+const fortunes = ["Pokonaj swoje lęki albo one pokonają Ciebie"];
