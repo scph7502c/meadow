@@ -1,6 +1,6 @@
 const express = require("express");
 const { engine } = require("express-handlebars");
-const fortune = require("./lib/fortune");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -15,7 +15,6 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views"); // Ścieżka do folderu z widokami
 
-// Ścieżka do katalogu public
 app.use(express.static(__dirname + "/public"));
 
 // Definiowanie trasy głównej
@@ -23,7 +22,8 @@ app.get("/", (req, res) => res.render("home", { layout: "main" }));
 
 // Definiowanie trasy /about
 app.get("/about", (req, res) => {
-  res.render("about", { fortune: fortune.getFortune() });
+  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+  res.render("about", { fortune: randomFortune });
 });
 
 // Obsługa błędu 404
@@ -46,6 +46,10 @@ app.listen(port, () =>
   )
 );
 
-setTimeout(() => {
-  console.log(__dirname);
-}, 2000);
+const fortunes = [
+  "Pokonaj swoje lęki albo one pokonają Ciebie.",
+  "Rzeki potrzebują źródeł",
+  "Nie obawiaj się nieznanego.",
+  "Oczekuj przyjemnej niespodzianki.",
+  "Zawsze szukaj prostego rozwiązania.",
+];
