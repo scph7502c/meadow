@@ -1,0 +1,27 @@
+name: Node.js CI
+
+# Specify when the workflow should be triggered
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on every push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger the workflow on every pull request to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Run on the latest version of Ubuntu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Check out the code from the repository
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2  # Set up the Node.js environment
+        with:
+          node-version: '20'  # Use Node.js version 20 (you can adjust to the version you are using)
+
+      - name: Install dependencies
+        run: npm install  # Install dependencies from package.json
+
