@@ -6,14 +6,16 @@
   "scripts": {
     "start": "node meadowlark.js",
     "dev": "nodemon meadowlark.js",
-    "test": "jest", 
+    "test": "jest",
     "lint": "eslint . --ext .js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "express": "^4.21.1",
-    "express-handlebars": "^8.0.1"
+    "express-handlebars": "^8.0.1",
+    "sass": "^1.79.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
