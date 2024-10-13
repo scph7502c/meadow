@@ -5,6 +5,7 @@ const handlers = require('../lib/handlers');
 const app = express();
 const port = process.env.PORT || 3000;
 const weatherMiddleware = require('../lib/middleware/weather');
+const bodyParser = require('body-parser');
 
 // Konfiguracja silnika widoków Handlebars
 app.engine(
@@ -28,6 +29,7 @@ app.set('views', path.join(__dirname, '../views'));
 // Ścieżka do katalogu public
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(weatherMiddleware);
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Definiowanie trasy głównej
 app.get('/', handlers.home);
@@ -50,6 +52,13 @@ app.get('/headers', (req, res) => {
 app.get('greeting', (req, res) => {
   res.render('greeting');
 });
+
+app.get('/newsletter-signup', handlers.newsletterSignup);
+app.post('/newsletter-signup/process', handlers.newsletterSignupProcess);
+app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou);
+app.get('/newsletter', handlers.newsletter);
+app.post('/api/newsletter-signup', handlers.api.newsletterSignup);
+
 // Obsługa błędu 404
 app.use(handlers.notFound);
 
