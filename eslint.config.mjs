@@ -1,7 +1,7 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import pluginHbs from 'eslint-plugin-hbs';
-import pluginJest from 'eslint-plugin-jest'; // Importujemy obiekt wtyczki Jest
+import pluginJest from 'eslint-plugin-jest';
 
 export default [
   pluginJs.configs.recommended,
@@ -15,7 +15,7 @@ export default [
       },
     },
     plugins: {
-      hbs: pluginHbs, // Dodajemy wtyczkę HBS jako obiekt
+      hbs: pluginHbs,
     },
     ignores: ['**/*.hbs', 'coverage/**'],
     rules: {
@@ -29,11 +29,11 @@ export default [
       '**/*.{test,spec}.{js,mjs,cjs,jsx}',
     ], // Testy
     plugins: {
-      jest: pluginJest, // Dodajemy wtyczkę Jest
+      jest: pluginJest,
     },
     languageOptions: {
       globals: {
-        ...globals.jest, // Włączamy globalne zmienne Jest
+        ...globals.jest,
       },
     },
     rules: {
