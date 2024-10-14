@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const weatherMiddleware = require('../lib/middleware/weather');
 const bodyParser = require('body-parser');
+const multiparty = require('multiparty');
 
 // Konfiguracja silnika widoków Handlebars
 app.engine(
@@ -58,7 +59,22 @@ app.post('/newsletter-signup/process', handlers.newsletterSignupProcess);
 app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou);
 app.get('/newsletter', handlers.newsletter);
 app.post('/api/newsletter-signup', handlers.api.newsletterSignup);
+app.get('/contest/vacation-photo', (req, res) => {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1; // Miesiące w JS są indeksowane od 0
+  res.render('contest/vacation-photo', {
+    year: currentYear,
+    month: currentMonth,
+  });
+});
 
+app.post('/contest/vacation-photo/:year/:month', (req, res) => {
+  const form = new multiparty.Form();
+  form.parse(req, (err, fields, files) => {
+    if (err) return res.status(500).send({ error: err.message });
+    handlers.vacationPhotoContestProcess(req, res, fields, files);
+  });
+});
 // Obsługa błędu 404
 app.use(handlers.notFound);
 
